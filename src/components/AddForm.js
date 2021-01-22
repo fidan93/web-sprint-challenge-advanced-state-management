@@ -1,24 +1,59 @@
 import React from 'react';
+import {connect} from 'react-redux';
+import {addSmurf} from '../actions/index'
 
 class AddForm extends React.Component {
 
+    state = {
+        name: '',
+        position: '',
+        nickname: '',
+        description: ''
+    }
+
+handleChange = (e) => {
+    this.setState({
+        ...this.state,
+        [e.target.name]: e.target.value
+    })
+}
+
+handleSubmit = (e) =>{
+    e.preventDefault();
+    this.props.addSmurf(this.state)
+ 
+}
     render() {
+        //console.log(this.state)
         return(<section>
             <h2>Add Smurf</h2>
-            <form>
+            <form onSubmit = {this.handleSubmit}> 
                 <div className="form-group">
                     <label htmlFor="name">Name:</label><br/>
-                    <input onChange={this.handleChange} name="name" id="name" />
+                    <input onChange={this.handleChange} name="name" id="name" value = {this.state.name}/>
+
+                    <label htmlFor="position">Position:</label><br/>
+                    <input onChange={this.handleChange} name="position" id="position" value = {this.state.position} />
+
+                    <label htmlFor="nickname">Nickname:</label><br/>
+                    <input onChange={this.handleChange} name="nickname" id="nickname" value = {this.state.nickname}/>
+
+                    <label htmlFor="description">Description:</label><br/>
+                    <textarea onChange={this.handleChange} name="description" id="description" value = {this.state.description}/>
                 </div>
 
-                <div data-testid="errorAlert" className="alert alert-danger" role="alert">Error: </div>
+                <div data-testid="errorAlert" className="alert alert-danger" role="alert">Error:{this.props.err} </div>
                 <button>Submit Smurf</button>
             </form>
         </section>);
     }
 }
-
-export default AddForm;
+const mapStateToProps = (state) => {
+    return {
+        err: state.error
+    }
+}
+export default connect(mapStateToProps,{addSmurf})(AddForm);
 
 //Task List:
 //1. Add in all necessary import components and library methods.

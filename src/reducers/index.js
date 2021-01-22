@@ -1,8 +1,23 @@
-
+import {SMURFS_START,SMURFS_FAIL,SMURFS_SUCCESS} from '../actions/index'
 export const initialState = {
+    smurfs: [],
+    isLoading:false,
+    error: ''
 }
 
-const reducer = ()=>{
+const reducer = (state = initialState,action)=>{
+    switch (action.type) {
+        case SMURFS_START:
+            return {...state,isLoading: true, error: ''};
+
+        case SMURFS_SUCCESS:
+            return {...state, isLoading: false, smurfs: action.payload}
+       
+        case SMURFS_FAIL:
+            return {...state, isLoading:false, error: action.payload}  
+        default:
+           return state;
+    }
 }
 
 export default reducer;
